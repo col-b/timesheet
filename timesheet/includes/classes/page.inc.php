@@ -74,7 +74,7 @@ class page
         $menu .= '<form method="post" action="report.inc.php">';
         $menu .= 'Report from: ';
 
-        $date_option = new date_option(strtotime("last saturday 12:00 a.m."));
+        $date_option = new date_option(strtotime("last sunday 12:00 a.m."));
         $menu .= $date_option->draw('report_start');
         $menu .= '<p>Until: ';
 
