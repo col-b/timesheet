@@ -165,7 +165,7 @@ class date_option
 
     function year_list()
     {
-        $i = date("Y", strtotime("-5 years"));
+        $i = date("Y", strtotime("-30 years"));
         $myyear = date("Y", $this->time);
         while ($i <= date("Y"))
         {
