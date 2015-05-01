@@ -301,16 +301,22 @@ class report
         $list->set_width("session_start", 7);
         $list->set_align("session_start", "center");
 
+        if ($_POST['report_start']) {
+            $_SESSION['report_start'] = $_POST['report_start'];
+            $_SESSION['report_end'] = $_POST['report_end'];
+        }
+        $report_start = $_SESSION['report_start'];
+        $report_end = $_SESSION['report_end'];
+        $report_start_date = new date_option($report_start);
+        $report_end_date = new date_option($report_end);
+        $the_report_start_date = date($report_start_date->get());
+        $the_report_end_date = date($report_end_date->get());
+
         $tables[] = "project";
         $wheres[] = "project.project_id = session.project_id";
         $wheres[] = "project.user_id = " . $_SESSION['user_userid'];
         $wheres[] = "session_start >= '".date("Y-m-d H:i:s",$the_report_start_date)."'";
-        if ($_POST['report_start']) {
-            $_SESSION['report_start'] = $_POST['report_start'];
-        }
-        $report_start = $_SESSION['report_start'];
-        $report_start_date = new date_option($report_start);
-        $the_report_start_date = date($report_start_date->get());
+        $wheres[] = "session_start <= '".date("Y-m-d H:i:s",$the_report_end_date)."'";
 
         // project column
         $col[] = "project.project_name";
@@ -359,13 +365,13 @@ class report
                 if ($project_filter[0] == $cur_project_filter)
                 {
                     $project_statement .= "(project.project_id = $cur_project_filter ";
-                    $project_statement .= "and session_start >= '" . date("Y-m_d H:i:s",$the_report_start_date) . "')";
                 }
                 else
                 {
                     $project_statement .= " or (project.project_id = $cur_project_filter ";
-                    $project_statement .= "and session_start >= '" . date("Y-m_d H:i:s",$the_report_start_date) . "')";
                 }
+                
+                $project_statement .= "and session_start >= '" . date("Y-m_d H:i:s",$the_report_start_date) . "')";
             }
             $project_statement .= ")";
         }
